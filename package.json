@@ -1,0 +1,21 @@
+{
+  "name": "mysqltriggers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-container": "docker run --rm --name trigger-container -dp 3306:3306 -v jwt-config:/etc -v jwt-data:/var/lib/mysql mysql/mysql-server:latest",
+    "stop-container": "docker stop trigger-container"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.12.5",
+    "yargs": "^17.3.1"
+  }
+}
