@@ -1,33 +1,36 @@
 require("dotenv").config();
-const yargs = require('yargs');
+const yargs = require('yargs/yargs');
+const { hideBin } = require("yargs/helpers");
+const argv = yargs(hideBin(process.argv)).argv;
 const { Sequelize, DataTypes } = require("sequelize");
 
 const connection = require('./db/connection');
 const { Test, Counter } = require("./models/models");
 
-const command = yargs.argv._[0];
-
-const app = async (yargsObj) => {
+const app = async (argv) => {
+    try {
+        await connection.authenticate();
+        await Test.sync({alter: true});
+    } catch (error) {
+        console.log(error);
+    }
     
     try {
-        if (command === 'add') {
+        if (argv.add) {
             console.log("add hot")
-            await connection.authenticate();
-            await Test.sync({alter: true});
             // await Counter.sync({alter: true});
             const test = Test.create({name: yargsObj.name, isTrue: parseInt(yargsObj.isTrue), update_counter: parseInt(yargsObj.updateCounter)});
             const counter = Counter.build({name: yargsObj.name, counter: parseInt(yargsObj.Updateounter)});
             // await test.save();
             // await counter.save();
-        } else if (command === "list") {
+        } else if (argv.list) {
             console.log("list hot")
-            await connection.authenticate();
             const test = await Test.findAll({
                 // where: {
                 //     name: yargsObj.name
                 // }
             });
-            console.log(test);
+            console.log(JSON.stringify(test, null, 2));
         
         } else if (command === 'update') {
             // console.log("update hit");
@@ -43,11 +46,13 @@ const app = async (yargsObj) => {
             await test.update({isTrue: yargsObj.isTrue});
             console.log(test);
         }
+        await connection.close();
+        process.exit();
     } catch (error) {
         console.log(error);
     }
 };
 
 // {isTrue: parseInt(yargsObj.isTrue)}
-app(yargs.argv);
+app(argv);
 
