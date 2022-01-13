@@ -7,8 +7,8 @@ const { Sequelize } = require("sequelize");
 const connection = require('./db/connection');
 const { Test, Counter } = require("./models/models");
 const Movie = require("./models/movieModel");
-const { addMovie } = require("./utils/movieFunctions");
-const { addAdmin } = require("./utils/adminFunctions");
+const { addMovie, listMovies } = require("./utils/movieFunctions");
+const { addAdmin, listAdmins } = require("./utils/adminFunctions");
 const Admin = require("./models/adminModel");
 
 const app = async (argv) => {
@@ -23,7 +23,6 @@ const app = async (argv) => {
     
     try {
         if (argv.add) {
-            console.log("add hot")
             // await Counter.sync({alter: true});
             // const test = Test.create({name: yargsObj.name, isTrue: parseInt(yargsObj.isTrue), update_counter: parseInt(yargsObj.updateCounter)});
             // const counter = Counter.build({name: yargsObj.name, counter: parseInt(yargsObj.Updateounter)});
@@ -34,13 +33,18 @@ const app = async (argv) => {
             }
            
         } else if (argv.list) {
-            console.log("list hot")
-            const test = await Test.findAll({
-                // where: {
-                //     name: yargsObj.name
-                // }
-            });
-            console.log(JSON.stringify(test, null, 2));
+            // const test = await Test.findAll({
+            //     // where: {
+            //     //     name: yargsObj.name
+            //     // }
+            // });
+            // console.log(JSON.stringify(test, null, 2));
+
+            if (argv.movies) {
+                await listMovies();
+            } else if (argv.admins) {
+                await listAdmins();
+            }
         
         } else if (argv.update) {
             // console.log("update hit");

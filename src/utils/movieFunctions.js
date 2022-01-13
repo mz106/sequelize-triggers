@@ -11,6 +11,16 @@ const addMovie = async (movieObj) => {
     }
 };
 
+const listMovies = async () => {
+    try {
+        const movies = await Movie.findAll({});
+        console.log(JSON.stringify(movies, null, 2));
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 module.exports = {
     addMovie,
+    listMovies
 };
