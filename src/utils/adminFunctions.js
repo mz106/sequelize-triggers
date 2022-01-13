@@ -10,6 +10,16 @@ const addAdmin = async (adminObj) => {
     }
 };
 
+const listAdmins = async () => {
+    try {
+        const admins = await Admin.findAll({});
+        console.log(JSON.stringify(admins, null, 2));
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 module.exports = {
-    addAdmin
+    addAdmin,
+    listAdmins
 };
